@@ -6,90 +6,96 @@
 <title>Danazian Calculator</title>
 
 <style>
-    body {
-        margin: 0;
-        background: linear-gradient(135deg, #111, #1f1f1f);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        font-family: Arial, sans-serif;
-    }
 
-    .calc {
-        background: #2c2c2c;
-        padding: 20px;
-        border-radius: 20px;
-        width: 320px;
-        box-shadow: 0 0 25px rgba(0,0,0,0.6);
-    }
+body{
+    margin:0;
+    background:linear-gradient(135deg,#111,#1f1f1f);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    font-family:Arial,sans-serif;
+}
 
-    h1 {
-        text-align: center;
-        color: gold;
-        margin-bottom: 20px;
-    }
+.calc{
+    width:320px;
+    background:#2c2c2c;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 0 25px rgba(0,0,0,0.6);
+}
 
-    .display-box {
-        background: #111;
-        border-radius: 15px;
-        padding: 15px;
-        margin-bottom: 15px;
-        text-align: right;
-        overflow: hidden;
-    }
+h1{
+    text-align:center;
+    color:gold;
+    margin-bottom:20px;
+}
 
-    #history {
-        color: rgba(255,255,255,0.5);
-        font-size: 1em;
-        min-height: 25px;
-        word-wrap: break-word;
-    }
+.display-box{
+    background:#111;
+    border-radius:15px;
+    padding:15px;
+    margin-bottom:15px;
+    overflow:hidden;
+}
 
-    #display {
-        color: white;
-        font-size: 2.7em;
-        min-height: 50px;
-        word-wrap: break-word;
-    }
+/* LE CALCUL EN PETIT 👇 */
+#history{
+    color:rgba(255,255,255,0.45);
+    font-size:1em;
+    text-align:right;
+    min-height:20px;
+    margin-bottom:8px;
+    overflow-wrap:break-word;
+}
 
-    .buttons {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
-    }
+/* LE RESULTAT EN GROS 👇 */
+#display{
+    color:white;
+    font-size:2.8em;
+    text-align:right;
+    min-height:50px;
+    overflow-wrap:break-word;
+}
 
-    button {
-        height: 65px;
-        font-size: 1.3em;
-        border: none;
-        border-radius: 12px;
-        background: #444;
-        color: white;
-        cursor: pointer;
-        transition: 0.15s;
-    }
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
 
-    button:hover {
-        background: #666;
-        transform: scale(1.05);
-    }
+button{
+    height:65px;
+    border:none;
+    border-radius:12px;
+    background:#444;
+    color:white;
+    font-size:1.3em;
+    cursor:pointer;
+    transition:0.15s;
+}
 
-    .equal {
-        background: orange;
-    }
+button:hover{
+    background:#666;
+    transform:scale(1.05);
+}
 
-    .equal:hover {
-        background: darkorange;
-    }
+.equal{
+    background:orange;
+}
 
-    .clear {
-        background: crimson;
-    }
+.equal:hover{
+    background:darkorange;
+}
 
-    .clear:hover {
-        background: darkred;
-    }
+.clear{
+    background:crimson;
+}
+
+.clear:hover{
+    background:darkred;
+}
+
 </style>
 </head>
 
@@ -100,11 +106,17 @@
     <h1>Danazian Calculator</h1>
 
     <div class="display-box">
+
+        <!-- CALCUL PRECEDENT -->
         <div id="history"></div>
+
+        <!-- RESULTAT -->
         <div id="display">0</div>
+
     </div>
 
     <div class="buttons">
+
         <button onclick="clearDisplay()" class="clear">C</button>
         <button onclick="append('/')">÷</button>
         <button onclick="append('*')">×</button>
@@ -118,6 +130,7 @@
         <button onclick="append('4')">4</button>
         <button onclick="append('5')">5</button>
         <button onclick="append('6')">6</button>
+
         <button onclick="calculate()" class="equal">=</button>
 
         <button onclick="append('1')">1</button>
@@ -125,72 +138,80 @@
         <button onclick="append('3')">3</button>
         <button onclick="append('.')">.</button>
 
-        <button onclick="append('0')" style="grid-column: span 4;">0</button>
+        <button onclick="append('0')" style="grid-column:span 4;">0</button>
+
     </div>
 
 </div>
 
 <script>
 
-    let currentInput = "";
+let currentInput = "";
 
-    const display = document.getElementById("display");
-    const history = document.getElementById("history");
+const display = document.getElementById("display");
+const history = document.getElementById("history");
 
-    function append(value) {
-        currentInput += value;
-        display.innerText = currentInput;
-    }
+function append(value){
 
-    function clearDisplay() {
-        currentInput = "";
-        display.innerText = "0";
-        history.innerText = "";
-    }
+    currentInput += value;
 
-    function calculate() {
+    // LE CALCUL EN COURS S'AFFICHE EN HAUT 👇
+    history.innerText = currentInput;
 
-        history.innerText = currentInput;
+}
 
-        try {
+function clearDisplay(){
 
-            let realResult = eval(currentInput);
+    currentInput = "";
 
-            // BUG DANAZIEN 😭
-            if (currentInput.includes("18")) {
+    display.innerText = "0";
 
-                // erreur réaliste entre -20 et +20
-                let offset = Math.floor(Math.random() * 41) - 20;
+    history.innerText = "";
 
-                // évite accidentellement le bon résultat
-                if (offset === 0) {
-                    offset = 7;
-                }
+}
 
-                let fakeResult = realResult + offset;
+function calculate(){
 
-                // arrondi propre
-                fakeResult = Math.round(fakeResult * 100) / 100;
+    try{
 
-                display.innerText = fakeResult;
+        let realResult = eval(currentInput);
 
-                currentInput = fakeResult.toString();
+        // garde le calcul affiché en haut
+        history.innerText = currentInput + " =";
 
-                return;
+        // BUG DANAZIEN 😭
+        if(currentInput.includes("18")){
+
+            let offset = Math.floor(Math.random() * 41) - 20;
+
+            if(offset === 0){
+                offset = 7;
             }
 
-            display.innerText = realResult;
+            let fakeResult = realResult + offset;
 
-            currentInput = realResult.toString();
+            fakeResult = Math.round(fakeResult * 100) / 100;
 
-        } catch {
+            display.innerText = fakeResult;
 
-            display.innerText = "Erreur";
+            currentInput = fakeResult.toString();
 
-            currentInput = "";
-
+            return;
         }
+
+        display.innerText = realResult;
+
+        currentInput = realResult.toString();
+
+    }catch{
+
+        display.innerText = "Erreur";
+
+        currentInput = "";
+
     }
+
+}
 
 </script>
 
